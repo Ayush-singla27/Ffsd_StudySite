@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="shortcut icon" type="png" href="image/icon/headlogo.png">
+	<title>Login SignUp</title>
+	<link rel="stylesheet" type="text/css" href="loginStyle.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script>
+		function checkPassword(){
+			let password=document.getElementById("password").value;
+			let cnfrmPassword=document.getElementById("cnfrm-password").value;
+			 console.log(password,cnfrmPassword);
+			let message= document.getElementById("message");
+			// if(!$("upperCase").hasClass("active") ||!$("number").hasClass("active")||!$("specialChar").hasClass("active") ||!$("minLength").hasClass("active")){
+			// 	alert("not complete");
+			// }
+			if(password.length !=0){
+				if(password == cnfrmPassword){
+					alert("You are now registered !");
+					message.style.backgroundColor="#3ae374";
+				}
+				else{
+					alert("Password didn't match");
+					message.style.backgroundColor="#3ae374";
+				}
+			}
+			
+			else{
+				alert("Fields can't be empty")
+				message.style.backgroundColor="#3ae374";
+			}
+			
+		}
+	</script>
+
+
+  <!-- It will redirect to the Home Page after submitting the form -->
+  <script>
+  $(document).ready(function(){
+    $("form").submit(function(){
+    });
+  });
+  </script>
+
+  
+
+</head>
+<body>
+		<div class="form-box">
+			<div class="button-box">
+				<div id="btn"></div>
+				<button type="button" class="toggle-btn" id="log" onclick="login()" style="color: #fff;">Log In</button>
+				<button type="button" class="toggle-btn" id="reg" onclick="register()">Register</button>
+			</div>
+			<div class="social-icons">
+				<img src="image/icon/fb2.png">
+				<img src="image/icon/insta2.png">
+				<img src="image/icon/tt2.png">
+			</div>
+			
+
+			<!-- Login Form -->
+			<form id="login" class="input-group" method="post" action="/student">
+				<div class="inp">
+					<img src="image/icon/user.png"><input type="text" id="email" class="input-field" name = "email" placeholder="Username or Phone Number" style="width: 88%; border:none;" required="required">
+				</div>
+				<div class="inp">
+					<img src="image/icon/password.png"><input type="password" required  class="input-field" name = "password" placeholder="Password" style="width: 88%; border: none;" required="required">
+				</div>
+				<input type="checkbox" class="check-box">Remember Password
+				<button type="submit" class="submit-btn">Log In</button>
+				<br>
+				<div>
+					<center style="color: red;"><%= locals.errlogin||''%></center>
+				</div>
+				
+			</form>
+
+
+			<div class="other" id="other">
+				<div class="instead">
+					<br>
+					<h3>or</h3>
+				</div>
+				<button class="connect" onclick="google()">
+					<img src="image/icon/google.png"><span>Sign in with Google</span>
+				</button>				
+			</div>
+
+
+			<!-- Registration Form -->
+			<form id="register" class="input-group" method="post" action="/login">
+				<input type="text" class="input-field" name ="fullname" placeholder="Full Name" required="required">
+				<input type="email" class="input-field" name ="email" placeholder="Email Address" required="required">
+				<input type="password" id = "password" class="input-field" name = "password" placeholder="Create Password" name="psame" required="required">
+				<div class="toggle_pass">
+					<img src="image/icon/eye.png" class="toggle_active">
+					<img src="image/icon/closeEye.png" class="toggle_inactive">
+				</div>
+				<div class = "conditions">
+					<div class="minLength">
+						4 Characters
+					</div>
+					<div class="number">
+						contains number
+					</div>
+					<div class="upperCase">
+						contains upperCase
+					</div>
+					<div class="specialChar">
+						contains special character
+					</div>
+				</div>
+				<input type="password" id = "cnfrm-password" class="input-field" name = "cnfrm-password" placeholder="Confirm Password" name="cpsame" required="required">
+				<input type="checkbox" class="check-box" id="chkAgree" onclick="goFurther()">I agree to the Terms & Conditions
+				<br>
+				<div>
+					<center style="color: red;"><%= locals.errsend||''%></center>
+				</div>
+				<br>
+				<p id = "message"></p>
+				<button type="submit" id="btnSubmit" onclick = "checkPassword()" class="submit-btn reg-btn">Register</button>
+			</form>
+			
+			
+		</div>
+		<script type="text/javascript" src="main.js"></script>
+
+
+	<!-- script for password constraints -->
+	<script>
+		function _id(name){
+			return document.getElementById(name);
+		}
+		function _class(name){
+			return document.getElementsByClassName(name);
+		}
+		_class("toggle_pass")[0].addEventListener("click",function(){
+			_class("toggle_pass")[0].classList.toggle("active");
+			if(_id("password").getAttribute("type")=="password"){
+				_id("password").setAttribute("type","text");
+			}
+			else{
+				_id("password").setAttribute("type","password");
+			}
+		});
+		_id("password").addEventListener("focus",function(){
+			_class("conditions")[0].classList.add("active");
+		});
+		_id("password").addEventListener("blur",function(){
+			_class("conditions")[0].classList.remove("active");
+		});
+		_id("password").addEventListener("keyup",function(){
+			let password = _id("password").value;
+
+			if(/[A-Z]/.test(password)){
+				_class("upperCase")[0].classList.add("active");
+				// console.log(password);
+			}
+			else{
+				_class("upperCase")[0].classList.remove("active");
+			}
+
+			if(/[0-9]/.test(password)){
+				_class("number")[0].classList.add("active");
+			}
+			else{
+				_class("number")[0].classList.remove("active");
+			}
+
+			if(/[^A-Za-z0-9]/.test(password)){
+				_class("specialChar")[0].classList.add("active");
+			}
+			else{
+				_class("specialChar")[0].classList.remove("active");
+			}
+
+			if(password.length>4){
+				_class("minLength")[0].classList.add("active");
+			}
+			else{
+				_class("minLength")[0].classList.remove("active");
+			}
+			
+		});
+
+		
+	</script>
+</body>
+</html>
